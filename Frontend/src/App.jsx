@@ -10,6 +10,7 @@ function App() {
   });
 
   const [users, setUsers] = useState([]);
+  const [open, setOpen] = useState(false);
   const url = "http://localhost:5500/";
 
   const fetchUsers = async () => {
@@ -17,14 +18,38 @@ function App() {
       const res = await fetch(url + "api/get-users");
       const data = await res.json();
       setUsers(data);
+      // console.log("Fetched users:", data);
     } catch (error) {
-      console.error("Error fetching users:", error);
+      // console.error("Error fetching users:", error);
+      alert('Failed to fetch users. Please try again later.', error);
     }
   };
 
   useEffect(() => {
+    // console.log("Fetching users...", users);
     fetchUsers();
   }, []);
+
+  const deleteImage = async (id) => {
+    try{
+      const res = await fetch(url + `api/delete/${id}`, {
+        method: 'DELETE'
+      });
+
+      if (!res.ok) throw new Error(res.Error || "Delete failed");
+
+      const result = await res.json();
+      // console.log('Delete successful:', result);
+      alert('Image deleted successfully!');
+
+      await fetchUsers(); // ✅ clean reuse
+
+    }
+    catch(error){
+      // console.error("Error deleting image:", error);
+      alert('Failed to delete image. Please try again later.', error);
+    }
+  }
 
   const handleChange = (e) => {
     const { name, value, files } = e.target;
@@ -60,7 +85,7 @@ function App() {
       if (!res.ok) throw new Error("Upload failed");
       
       const result = await res.json();
-      console.log('Upload successful:', result);
+      // console.log('Upload successful:', result);
       alert('Image uploaded successfully!');
 
       await fetchUsers(); // ✅ clean reuse
@@ -72,7 +97,8 @@ function App() {
       });
 
     } catch (error) {
-      console.error("Upload failed:", error);
+      // console.error("Upload failed:", error);
+      alert('Image upload failed. Please try again.', error);
     }
   };
 
@@ -158,9 +184,19 @@ function App() {
           {users.map((data) => {
             return (
               <div key={data._id} className='w-60 h-60 bg-slate-300 rounded-lg flex flex-col items-center justify-center gap-3 p-3'>
+
                 <img src={data.imageUrl} alt={data.name} className='w-full h-3/4 object-cover rounded-lg' />
+                 
                 <h3 className='text-lg font-semibold'>{data.name}</h3>
-                {/* <p className='text-sm text-gray-600'>{data.email}</p> */}
+
+                <div className='flex gap-3'>
+
+                <button><a href={data.imageUrl} target="_blank" rel="noopener noreferrer" className='bg-blue-500 hover:bg-blue-600 text-white font-bold py-1 px-3 rounded cursor-pointer'>View</a></button>
+
+                <button onClick={() => deleteImage(data._id)} className='bg-red-500 hover:bg-red-600 text-white font-bold py-1 px-3 rounded cursor-pointer'>Delete</button>
+
+                </div>
+      
               </div>
             )
           })}
@@ -179,80 +215,3 @@ export default App
 
 
 
-//  const [formData, setFormData] = useState({
-//     name: "",
-//     email: "",
-//     image: null,
-//   });
-
-//   const [users, setUsers] = useState([]);
-//   const url = 'http://localhost:5500/'
-
-
-//   const handleChange = (e) => {
-//     const { name, value, files } = e.target;
-
-//     if (name === "image") {
-//       setFormData((prev) => ({
-//         ...prev,
-//         image: files?.[0] || null,
-//       }));
-//       return;
-//     }
-
-//     setFormData((prev) => ({
-//       ...prev,
-//       [name]: value,
-//     }));
-//   };
-
-//   const handleSubmit = async (e) => {
-//     e.preventDefault()
-
-//     const data = new FormData();
-
-//     data.append('name', formData.name);
-//     data.append('email', formData.email);
-//     data.append('image', formData.image);
-
-//     try {
-//       const res = await fetch(url + 'api/upload', {
-//         method: 'POST',
-//         body: data
-//       })
-
-//       const result = await res.json();
-//       console.log('Upload successful:', result);
-//       alert('Image uploaded successfully!');
-
-//       setFormData({
-//         name: "",
-//         email: "",
-//         image: null,
-//       });
-
-  
-//       const resUsers = await fetch(url + 'api/get-users');
-//       const dataUsers = await resUsers.json();
-//       setUsers(dataUsers);
-//     } catch (error) {
-
-//       console.error('Upload failed:', error);
-//       alert('Image upload failed. Please try again.');
-//     }
-
-//     console.log('Submitted form:', formData)
-//   }
-
-//   useEffect(() => {
-//     const fetchusers = async () => {
-//       try{
-//         const res = await fetch(url+'api/get-users');
-//         const data = await res.json();
-//         setUsers(data);
-//       }catch(error){
-//         console.error("Error fetching users:", error);
-//       }
-//     }
-//     fetchusers();
-//   },[]);
