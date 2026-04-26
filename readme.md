@@ -52,8 +52,9 @@ project/
 ### 1️⃣ Clone the repository
 
 ```bash
-git clone https://github.com/your-username/your-repo-name.git
-cd your-repo-name
+git clone https://github.com/SuyashM013/Cloudinary---FullStack-Media
+cd Backend
+cd Frontend
 ```
 
 ---
@@ -61,7 +62,7 @@ cd your-repo-name
 ### 2️⃣ Backend Setup
 
 ```bash
-cd server
+cd Backend
 npm install
 ```
 
@@ -87,7 +88,7 @@ npm start
 ### 3️⃣ Frontend Setup
 
 ```bash
-cd client
+cd Frontend
 npm install
 npm run dev
 ```
