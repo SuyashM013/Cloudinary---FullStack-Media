@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import './App.css'
 import { useEffect } from 'react'
+// import.meta.env.VITE_API_BACKEND_PORT
 
 function App() {
   const [formData, setFormData] = useState({
@@ -10,8 +11,8 @@ function App() {
   });
 
   const [users, setUsers] = useState([]);
-  const [open, setOpen] = useState(false);
-  const url = "http://localhost:5500/";
+  // const url = "http://localhost:5500/";
+  const url = import.meta.env.VITE_API_BACKEND_PORT; // Use environment variable or fallback to localhost
 
   const fetchUsers = async () => {
     try {
@@ -31,7 +32,7 @@ function App() {
   }, []);
 
   const deleteImage = async (id) => {
-    try{
+    try {
       const res = await fetch(url + `api/delete/${id}`, {
         method: 'DELETE'
       });
@@ -45,7 +46,7 @@ function App() {
       await fetchUsers(); // ✅ clean reuse
 
     }
-    catch(error){
+    catch (error) {
       // console.error("Error deleting image:", error);
       alert('Failed to delete image. Please try again later.', error);
     }
@@ -83,7 +84,7 @@ function App() {
       });
 
       if (!res.ok) throw new Error("Upload failed");
-      
+
       const result = await res.json();
       // console.log('Upload successful:', result);
       alert('Image uploaded successfully!');
@@ -101,6 +102,8 @@ function App() {
       alert('Image upload failed. Please try again.', error);
     }
   };
+
+
 
 
   return (
@@ -176,33 +179,90 @@ function App() {
         </form>
       </div>
 
-      <div className='w-4/5 h-1/2 bg-slate-300/60 rounded-lg flex flex-col items-center justify-center gap-5 p-5'>
+      {/* <div className='w-4/5 h-1/2 bg-slate-300/60 rounded-lg flex flex-col items-center justify-center gap-5 p-5'>
         <h2 className='text-xl bold '> Gallery</h2>
 
         <div className='w-full h-full bg-white/40 backdrop-blur-lg rounded-lg p-5 flex flex-wrap gap-5 justify-center items-center overflow-y-auto'>
 
           {users.map((data) => {
             return (
-              <div key={data._id} className='w-60 h-60 bg-slate-300 rounded-lg flex flex-col items-center justify-center gap-3 p-3'>
+              <div key={data._id} className=' bg-slate-300 rounded-lg flex flex-col items-center justify-center gap-3 p-3'>
 
                 <img src={data.imageUrl} alt={data.name} className='w-full h-3/4 object-cover rounded-lg' />
-                 
+
                 <h3 className='text-lg font-semibold'>{data.name}</h3>
 
                 <div className='flex gap-3'>
 
-                <button><a href={data.imageUrl} target="_blank" rel="noopener noreferrer" className='bg-blue-500 hover:bg-blue-600 text-white font-bold py-1 px-3 rounded cursor-pointer'>View</a></button>
 
-                <button onClick={() => deleteImage(data._id)} className='bg-red-500 hover:bg-red-600 text-white font-bold py-1 px-3 rounded cursor-pointer'>Delete</button>
+                  <button onClick={() => deleteImage(data._id)} className='bg-red-500 hover:bg-red-600 text-white font-bold py-1 px-3 rounded cursor-pointer'>Delete</button>
 
                 </div>
-      
+
               </div>
             )
           })}
 
         </div>
 
+      </div> */}
+
+      <div className='w-4/5 h-1/2 bg-slate-300/60 rounded-lg flex flex-col gap-5 p-5'>
+        <h2 className='text-xl font-bold'>Gallery</h2>
+
+        <div className='w-full h-full bg-white/40 backdrop-blur-lg rounded-lg p-5 overflow-y-auto'>
+
+          <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-6'>
+
+            {users.map((data) => (
+              <div
+                key={data._id}
+                className='bg-white/70 rounded-xl shadow-md hover:shadow-lg transition-all duration-300 overflow-hidden flex flex-col'
+              >
+
+                {/* Image */}
+                <div className='w-full h-60 overflow-hidden'>
+                  <img
+                    src={data.imageUrl}
+                    alt={data.name}
+                    className='w-full h-full object-cover hover:scale-105 transition-transform duration-300'
+                  />
+
+                </div>
+
+                {/* Content */}
+                <div className='p-3 flex flex-col gap-2'>
+                  <h3 className='text-lg font-semibold text-center'>
+                    {data.name}
+                  </h3>
+
+                  <div className='flex gap-3 items-center justify-center mt-2'>
+
+                    <button>
+                      <a href={data.imageUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className='bg-blue-500 hover:bg-blue-600 text-white py-1 px-3 rounded-lg text-sm transition min-w-42 self-center'
+                      >
+                        View
+                      </a>
+                    </button>
+                    
+                    <button
+                      onClick={() => deleteImage(data._id)}
+                      className='bg-red-500 hover:bg-red-600 text-white py-1 px-3 rounded-lg text-sm transition min-w-42 self-center'
+                    >
+
+                      Delete
+                    </button>
+                  </div>
+                </div>
+
+              </div>
+            ))}
+
+          </div>
+        </div>
       </div>
 
 
