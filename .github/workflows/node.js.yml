@@ -30,11 +30,11 @@ jobs:
       # backend
       - name: Install backend
         run: |
-          cd Backend
+          working-directory: Backend
           npm install
         # frontend
       - name: Install frontend
         run: |
-          cd Frontend
+          working-directory:  Frontend
           npm install
           npm run build
