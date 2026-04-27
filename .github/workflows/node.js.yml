@@ -27,14 +27,13 @@ jobs:
         #   node-version: ${{ matrix.node-version }}
         #   cache: "npm"
 
-      # backend
+        # backend
       - name: Install backend
-        run: |
-          working-directory: Backend
-          npm install
+        run: npm install
+        working-directory: ./Backend
         # frontend
+
       - name: Install frontend
-        run: |
-          working-directory:  Frontend
-          npm install
-          npm run build
+        run: npm install npm run build
+
+        working-directory: ./Frontend
