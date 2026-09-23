@@ -113,6 +113,15 @@ function App() {
 
       </h1>
 
+      <div>
+        <button>
+          <a href={url + "health"}  rel="noopener noreferrer" className='bg-green-500 hover:bg-green-600 text-white py-1 px-3 rounded-lg text-sm transition min-w-42 self-center '>
+            
+            Check Backend Health
+          </a>
+        </button>
+      </div>
+
       <div className='w-2/3 h-1/2 bg-slate-300 rounded-lg flex flex-col justify-center gap-5 p-5'>
         <h2>Workflow looks like - </h2>
 
@@ -247,7 +256,7 @@ function App() {
                         View
                       </a>
                     </button>
-                    
+
                     <button
                       onClick={() => deleteImage(data._id)}
                       className='bg-red-500 hover:bg-red-600 text-white py-1 px-3 rounded-lg text-sm transition min-w-42 self-center'
