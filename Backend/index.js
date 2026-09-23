@@ -22,6 +22,10 @@ app.get("/", (req, res) => {
     res.send("Welcome to Cloudinary FullStack Backend!");
 });
 
+app.get("/health", (req, res) => {
+    res.status(200).json({message: "Server is working fine!"})
+})
+
 app.use("/api", indexRouter);
 
 
