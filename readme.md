@@ -69,7 +69,8 @@ npm install
 Create a `.env` file:
 
 ```
-PORT=5000
+
+PORT=5500
 MONGO_URI=your_mongodb_connection_string
 
 CLOUDINARY_CLOUD_NAME=your_cloud_name
